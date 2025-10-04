@@ -7,21 +7,19 @@ metadata:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   tls:
   - hosts:
-    - dailyapp.fun
+    - color-palette.dailyapp.fun
     secretName: color-palette-tls
   rules:
-  - host: dailyapp.fun
+  - host: color-palette.dailyapp.fun
     http:
       paths:
-      - path: /color-palette(/|$)(.*)
-        pathType: ImplementationSpecific
+      - path: /  # ← 루트 경로
+        pathType: Prefix
         backend:
           service:
             name: color-palette-service
             port:
               number: 80
-                                                              
