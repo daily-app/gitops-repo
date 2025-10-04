@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: color-palette
+  namespace: day1-color-palette
+  labels:
+    app: color-palette
+    day: "1"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: color-palette
+  template:
+    metadata:
+      labels:
+        app: color-palette
+    spec:
+      containers:
+      - name: app
+        image: cheesecrust/day1-color-palette:latest
+        ports:
+        - containerPort: 80
+          name: http
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          
