@@ -24,7 +24,7 @@ spec:
         env:
         # Database
         - name: SPRING_DATASOURCE_URL
-          value: "jdbc:mysql://mysql-service.mysql-service.svc.cluster.local:3306/authdb?useSSL=false&serverTimezone=Asia/Seoul"
+          value: "jdbc:mysql://mysql-service.mysql-service.svc.cluster.local:3306/authdb?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"
         - name: SPRING_DATASOURCE_USERNAME
           value: "root"
         - name: SPRING_DATASOURCE_PASSWORD
