@@ -5,6 +5,8 @@ metadata:
   namespace: mysql-service
   labels:
     app: mysql
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   replicas: 1
   selector:
@@ -63,13 +65,9 @@ spec:
         readinessProbe:
           exec:
             command:
-            - mysql
-            - -h
-            - localhost
-            - -uroot
-            - -p$MYSQL_ROOT_PASSWORD
-            - -e
-            - "SELECT 1"
+            - sh
+            - -c
+            - "mysql -h localhost -uroot -p${MYSQL_ROOT_PASSWORD} -e 'SELECT 1'"
           initialDelaySeconds: 10
           periodSeconds: 5
           timeoutSeconds: 3
