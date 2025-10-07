@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+  namespace: auth-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+      - name: auth-service
+        image: cheesecrust/auth-service:latest
+        ports:
+        - containerPort: 8080
+        
+        env:
+        # Database
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://mysql-service.mysql-service.svc.cluster.local:3306/authdb?useSSL=false&serverTimezone=Asia/Seoul"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "root"
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: auth-secret
+              key: db-password
+        
+        # JWT (expiration만 필요!)
+        - name: JWT_ACCESS_TOKEN_EXPIRATION
+          value: "900000"
+        - name: JWT_REFRESH_TOKEN_EXPIRATION
+          value: "604800000"
