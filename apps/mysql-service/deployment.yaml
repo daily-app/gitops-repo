@@ -85,3 +85,6 @@ spec:
       volumes:
       - name: mysql-data
         emptyDir: {}
+      - name: mysql-initdb
+        configMap:
+          name: mysql-initdb-config
