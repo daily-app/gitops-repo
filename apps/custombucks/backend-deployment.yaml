@@ -39,12 +39,13 @@ spec:
 
         # Google Cloud Credentials
         - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: "/etc/secrets/google/gen-lang-client-0016462667-8bc77c22b03e.json"
+          value: "/app/gen-lang-client-0016462667-8bc77c22b03e.json"
 
         # Volume Mounts
         volumeMounts:
         - name: google-credentials
-          mountPath: /etc/secrets/google
+          mountPath: /app/gen-lang-client-0016462667-8bc77c22b03e.json
+          subPath: gen-lang-client-0016462667-8bc77c22b03e.json
           readOnly: true
 
         # Resources (optional)
