@@ -47,6 +47,10 @@ spec:
           mountPath: /app/gen-lang-client-0016462667-8bc77c22b03e.json
           subPath: gen-lang-client-0016462667-8bc77c22b03e.json
           readOnly: true
+        - name: google-credentials
+          mountPath: /workspace/BOOT-INF/classes/gen-lang-client-0016462667-8bc77c22b03e.json
+          subPath: gen-lang-client-0016462667-8bc77c22b03e.json
+          readOnly: true
 
         # Resources (optional)
         resources:
@@ -62,10 +66,10 @@ spec:
           httpGet:
             path: /actuator/health
             port: 8080
-          initialDelaySeconds: 60
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
-          failureThreshold: 3
+          failureThreshold: 10
 
         readinessProbe:
           httpGet:
