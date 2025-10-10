@@ -84,8 +84,4 @@ spec:
 
       volumes:
       - name: mysql-data
-        persistentVolumeClaim:
-          claimName: mysql-pvc  # PVC 사용으로 데이터 영속화
-      - name: mysql-initdb
-        configMap:
-          name: mysql-initdb-config
+        emptyDir: {}
