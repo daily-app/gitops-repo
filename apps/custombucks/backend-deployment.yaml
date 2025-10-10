@@ -37,6 +37,16 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod"
 
+        # Google Cloud Credentials
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: "/etc/secrets/google/gen-lang-client-0016462667-8bc77c22b03e.json"
+
+        # Volume Mounts
+        volumeMounts:
+        - name: google-credentials
+          mountPath: /etc/secrets/google
+          readOnly: true
+
         # Resources (optional)
         resources:
           requests:
@@ -64,3 +74,12 @@ spec:
           periodSeconds: 5
           timeoutSeconds: 3
           failureThreshold: 3
+
+      # Volumes
+      volumes:
+      - name: google-credentials
+        secret:
+          secretName: mysql-secret
+          items:
+          - key: gen-lang-client-0016462667-8bc77c22b03e.json
+            path: gen-lang-client-0016462667-8bc77c22b03e.json
