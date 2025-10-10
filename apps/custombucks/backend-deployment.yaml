@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custombucks-backend
+  namespace: custombucks
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: custombucks-backend
+  template:
+    metadata:
+      labels:
+        app: custombucks-backend
+    spec:
+      containers:
+      - name: custombucks-backend
+        image: cheesecrust/custombucks-backend:latest  # TODO: 실제 이미지 레지스트리 주소로 변경
+        ports:
+        - containerPort: 8080
+
+        env:
+        # Database Configuration
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:mysql://mysql-service.mysql-service.svc.cluster.local:3306/custombucks?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true"
+        - name: SPRING_DATASOURCE_USERNAME
+          value: "root"
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: db-password
+
+        # Application Configuration
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+
+        # Resources (optional)
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+
+        # Health Checks
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3

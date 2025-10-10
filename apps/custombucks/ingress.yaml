@@ -1,0 +1,60 @@
+---
+# Frontend Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: custombucks-frontend-ingress
+  namespace: custombucks
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+  - hosts:
+    - custombucks.dailyapp.fun  
+    secretName: custombucks-frontend-tls
+  rules:
+  - host: custombucks.dailyapp.fun 
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: custombucks-frontend
+            port:
+              number: 3000
+
+---
+# Backend API Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: custombucks-backend-ingress
+  namespace: custombucks
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://custombucks.dailyapp.fun"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization"
+spec:
+  tls:
+  - hosts:
+    - custombucks-api.dailyapp.fun
+    secretName: custombucks-backend-tls
+  rules:
+  - host: custombucks-api.dailyapp.fun
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: custombucks-backend
+            port:
+              number: 8080

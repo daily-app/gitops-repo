@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: custombucks-frontend
+  namespace: custombucks
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: custombucks-frontend
+  template:
+    metadata:
+      labels:
+        app: custombucks-frontend
+    spec:
+      containers:
+      - name: custombucks-frontend
+        image: cheesecrust/custombucks-frontend:latest  # TODO: 실제 이미지 레지스트리 주소로 변경
+        ports:
+        - containerPort: 3000
+
+        env:
+        # Next.js Configuration
+        - name: NODE_ENV
+          value: "production"
+        - name: NEXT_TELEMETRY_DISABLED
+          value: "1"
+
+        # Backend API URL
+        - name: NEXT_PUBLIC_API_URL
+          value: "https://custombucks-api.dailyapp.fun"  # TODO: 실제 백엔드 도메인으로 변경
+
+        # Additional environment variables
+        # - name: NEXT_PUBLIC_CUSTOM_VAR
+        #   value: "value"
+
+        # Resources
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "250m"
+
+        # Health Checks
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3

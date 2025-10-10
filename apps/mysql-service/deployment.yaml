@@ -32,9 +32,12 @@ spec:
               name: auth-secret
               key: db-password
         
-        # 데이터베이스 자동 생성
+        # 데이터베이스 자동 생성 (첫 번째 DB만 자동 생성됨)
         - name: MYSQL_DATABASE
           value: "authdb"
+
+        # 추가 데이터베이스는 initdb 스크립트나 수동으로 생성 필요
+        # custombucks 데이터베이스는 별도로 생성
         
         # 문자셋
         - name: MYSQL_CHARACTER_SET_SERVER
@@ -76,7 +79,13 @@ spec:
         volumeMounts:
         - name: mysql-data
           mountPath: /var/lib/mysql
-      
+        - name: mysql-initdb
+          mountPath: /docker-entrypoint-initdb.d
+
       volumes:
       - name: mysql-data
-        emptyDir: {}  # 개발용
+        persistentVolumeClaim:
+          claimName: mysql-pvc  # PVC 사용으로 데이터 영속화
+      - name: mysql-initdb
+        configMap:
+          name: mysql-initdb-config
