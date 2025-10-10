@@ -1,0 +1,13 @@
+# Kubernetes Secrets (contains sensitive data)
+apps/*/secret.yaml
+apps/**/secret.yaml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
