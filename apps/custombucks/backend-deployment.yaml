@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: custombucks-backend
-        image: cheesecrust/custombucks-backend:latest  # TODO: 실제 이미지 레지스트리 주소로 변경
+        image: cheesecrust/custombucks-backend:latest
         ports:
         - containerPort: 8080
 
@@ -37,22 +37,17 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod"
 
-        # Google Cloud Credentials
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: "/app/gen-lang-client-0016462667-8bc77c22b03e.json"
+        # Google Cloud Credentials - 이 경로만 정확히!
+        - name: SPRING_AI_VERTEX_AI_CREDENTIALS_JSON
+          value: "file:/app/credentials/gen-lang-client-0016462667-8bc77c22b03e.json"
 
-        # Volume Mounts
+        # Volume Mounts - 디렉토리로 마운트 (중복 제거!)
         volumeMounts:
         - name: google-credentials
-          mountPath: /app/gen-lang-client-0016462667-8bc77c22b03e.json
-          subPath: gen-lang-client-0016462667-8bc77c22b03e.json
-          readOnly: true
-        - name: google-credentials
-          mountPath: /workspace/BOOT-INF/classes/gen-lang-client-0016462667-8bc77c22b03e.json
-          subPath: gen-lang-client-0016462667-8bc77c22b03e.json
+          mountPath: /app/credentials
           readOnly: true
 
-        # Resources (optional)
+        # Resources
         resources:
           requests:
             memory: "512Mi"
@@ -88,3 +83,4 @@ spec:
           items:
           - key: gen-lang-client-0016462667-8bc77c22b03e.json
             path: gen-lang-client-0016462667-8bc77c22b03e.json
+            
