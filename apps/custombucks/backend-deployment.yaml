@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: custombucks-backend
-        image: cheesecrust/custombucks-backend:latest
+        image: 
         ports:
         - containerPort: 8080
 
