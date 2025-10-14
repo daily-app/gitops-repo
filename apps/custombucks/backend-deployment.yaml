@@ -37,7 +37,7 @@ spec:
         - name: SPRING_PROFILES_ACTIVE
           value: "prod"
 
-        # Google Cloud Credentials - 이 경로만 정확히!
+        # Google Cloud Credentials
         - name: SPRING_AI_VERTEX_AI_CREDENTIALS_JSON
           value: "file:/app/credentials/gen-lang-client-0016462667-8bc77c22b03e.json"
 
