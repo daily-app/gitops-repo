@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: custombucks-frontend
-        image: cheesecrust/custombucks-frontend:latest  # TODO: 실제 이미지 레지스트리 주소로 변경
+        image:   # TODO: 실제 이미지 레지스트리 주소로 변경
         ports:
         - containerPort: 3000
 
