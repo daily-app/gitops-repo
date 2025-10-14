@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: custombucks-backend
-        image: 
+        image: cheesecrust/custombucks-backend:latest
         ports:
         - containerPort: 8080
 
@@ -83,4 +83,5 @@ spec:
           items:
           - key: gen-lang-client-0016462667-8bc77c22b03e.json
             path: gen-lang-client-0016462667-8bc77c22b03e.json
+
             
