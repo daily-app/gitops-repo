@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: custombucks-frontend
-        image: cheesecrust/custombucks-frontend:main-6ebb703
+        image: cheesecrust/custombucks-frontend:main-af7d4be
         ports:
         - containerPort: 3000
 
